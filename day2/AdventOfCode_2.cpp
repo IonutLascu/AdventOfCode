@@ -67,14 +67,14 @@ int getOccurence(const std::string& text, const char r) {
     return count(text.begin(), text.end(), r);
 }
 
-int partOne(int res, const pair<int, int> &lim) {
+bool partOne(int res, const pair<int, int> &lim) {
     if (res >= lim.first && res <= lim.second) {
         return true;
     }
     return false;
 }
 
-int partTwo(const string& text, const pair<int,int>& lim, const char r) {
+bool partTwo(const string& text, const pair<int,int>& lim, const char r) {
     
     if (lim.first > text.size() || lim.second > text.size()) {
         return false;
