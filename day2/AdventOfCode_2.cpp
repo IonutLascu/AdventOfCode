@@ -105,6 +105,6 @@ int main()
             ++resultsPartTwo;
         }
     }
-    //std::cout << resultsPartOne << std::endl;
+    std::cout << resultsPartOne << std::endl;
     std::cout << resultsPartTwo << " ";
 }
