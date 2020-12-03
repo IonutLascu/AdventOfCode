@@ -80,11 +80,16 @@ ifstream is("input.txt");
 int countTrees(const vector<string>& routes, pair<int, int> stepts) {
     int trees = 0;
     int start = 0;
-    for (auto itr = routes.begin() + 1; itr != routes.end(); itr+= stepts.second) {
+
+    for (auto itr = routes.begin() + stepts.second;  ;itr+= stepts.second) {
         start += stepts.first;
         auto currentPos = itr->begin() + start % itr->size();
         if (*currentPos == '#') {
             ++trees;
+        }
+
+        if (distance(routes.begin(), itr) + stepts.second >= routes.size()) {
+            break;
         }
     }
     return trees;
