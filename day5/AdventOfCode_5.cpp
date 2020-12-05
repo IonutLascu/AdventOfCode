@@ -24,26 +24,16 @@ int convertBinaryToDecimal(string& input, char c1, char c2)
     return decimalNumber;
 }
 
-int getMissingNumber(vector<int>& vct)
+int getMissingNumber(const int min, const int max, int sum)
 {
-    const int minNumber = *min_element(vct.begin(), vct.end());
-    const int maxNumber = *max_element(vct.begin(), vct.end());
-    
-    int sum = 0;
-    for (auto i : vct) {
-        sum += i;
-    }
-
-    const int sumUntilMin = ((minNumber - 1) * minNumber) / 2;
-    return (maxNumber * (maxNumber + 1)) / 2 - sumUntilMin - sum;
-    
+    const int sumUntilMin = ((min - 1) * min) / 2;
+    return (max * (max + 1)) / 2 - sumUntilMin - sum;
 }
 
 int main()
 {
     string input;
-    int row = 0, column = 0, firstPart = -1;
-    vector<int> vct;
+    int row = 0, column = 0, maxValue = -1, minValue = INT_MAX, sum = 0;
     while (!in.eof()) {
         in >> input;
         reverse(input.begin(), input.end());
@@ -52,11 +42,10 @@ int main()
         column = convertBinaryToDecimal(input, 'L', 'R');
 
         int currentVal = row * 8 + column;
-        if (firstPart < currentVal) {
-            firstPart = currentVal;
-        }
-        vct.push_back(currentVal);
+        maxValue = max(maxValue, currentVal);
+        minValue = min(minValue, currentVal);
+        sum += currentVal;
     }
-    std::cout << firstPart << " \n";
-    std::cout << getMissingNumber(vct);
+    std::cout << maxValue << " \n";
+    std::cout << getMissingNumber(minValue, maxValue, sum);
 }
