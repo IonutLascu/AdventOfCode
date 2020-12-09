@@ -109,13 +109,11 @@ void deserialize(Bags& allBags, const string& input)
 
 void countBagsThatContainSpecificBag(const Bags& allBags, UsedBags& usedBags, const string& searchedBag)
 {
-    for (auto i : allBags) {
-        auto found = i.second.find(searchedBag);
-        if (found != i.second.end()) {
-            if (usedBags.find(i.first) == usedBags.end()) {
-                usedBags.insert(i.first);
-                countBagsThatContainSpecificBag(allBags, usedBags, i.first);
-            }
+    auto found = i.second.find(searchedBag);
+    if (found != i.second.end()) {
+        if (usedBags.find(i.first) == usedBags.end()) {
+            usedBags.insert(i.first);
+            countBagsThatContainSpecificBag(allBags, usedBags, i.first);
         }
     }
 }
