@@ -51,37 +51,25 @@ using namespace std;
 ifstream in("input.txt");
 
 struct CodeLine {
-    CodeLine(string i, char o, int n, int v = 0) : 
+    CodeLine(string i, int n, int v = 0) : 
         instr{ i }, 
-        operation{ o },
         number{ n },
         isVisited{ v } {}
     string instr;
-    char operation;
     int number;
     int isVisited;
 };
 
-int getResult(vector<CodeLine> flow, bool flag = false) {
-    int accumulator = 0, i = 0;
+int getResult(vector<CodeLine> flow, int &i) {
+    int accumulator = 0;
     while (i < flow.size() && flow[i].isVisited == 0) {
         if (flow[i].instr.compare("acc") == 0) {
-            if (flow[i].operation == '+') {
                 accumulator += flow[i].number;
-            }
-            else {
-                accumulator -= flow[i].number;
-            }
             flow[i++].isVisited = true;
         }
         else if (flow[i].instr.compare("jmp") == 0) {
             flow[i].isVisited = true;
-            if (flow[i].operation == '+') {
                 i += flow[i].number;
-            }
-            else {
-                i -= flow[i].number;
-            }
         }
         else {
             ++i;
@@ -89,19 +77,33 @@ int getResult(vector<CodeLine> flow, bool flag = false) {
     }
     return accumulator;
 }
+
 int main()
 {
     string instr;
-    string operation;
+    int number;
     vector<CodeLine> flow;
     while (!in.eof()) {
-        string number;
-        in >> instr >> operation;
-        for (auto itr = operation.begin() + 1; itr != operation.end(); ++itr) {
-            number.push_back(*itr);
-        }
-        flow.push_back(CodeLine(instr, operation.front(), stoi(number)));
+        in >> instr >> number;
+        flow.push_back(CodeLine(instr, number));
     }
-    std::cout << getResult(flow) << "\n";
-    //std::cout << getResult(flow, true) << "\n";
+    int i;
+    std::cout << getResult(flow, i = 0) << "\n";
+    for (auto& f : flow) {
+        auto dummy = f.instr;
+        if (f.instr.compare("jmp") == 0) {
+            f.instr = "nop";
+        }
+        else if (f.instr.compare("nop") == 0) {
+            f.instr = "jmp";
+        }
+        int res = getResult(flow, i = 0);
+        if (i == flow.size()) {
+            cout << res;
+            break;
+        }
+        else {
+            f.instr = dummy;
+        }
+    }
 }
